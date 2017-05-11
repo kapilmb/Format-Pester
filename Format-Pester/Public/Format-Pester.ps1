@@ -159,7 +159,7 @@ Function Format-Pester {
         [Switch]$DumpPScriboObject
     )
 
-    [Version]$ScriptVersion = "1.4.2"
+    [Version]$ScriptVersion = "1.5.0"
 
     If ($Version.IsPresent) {
 
@@ -186,21 +186,21 @@ Function Format-Pester {
 
         Import-LocalizedData -FileName Format-Pester.psd1 -BindingVariable LocalizedStrings -UICulture 'en-US' -ErrorAction Stop
 
-        [String]$MessageText = "{0} {1} {2}" -f $LocalizedStrings.msg27, $Language, $LocalizedStrings.msg28
+        [String]$MessageText = "{0} {1} {2}" -f $LocalizedStrings.msgA013, $Language, $LocalizedStrings.msgA014
 
         Write-Verbose -Message $MessageText
 
     }
 
-    If ($LocalizedStrings.msg00 -lt $ScriptVersion) {
+    If ($LocalizedStrings.msgA000 -lt $ScriptVersion) {
 
-        [String]$MessageText = "{0}" -f $LocalizedStrings.msg29
+        [String]$MessageText = "{0}" -f $LocalizedStrings.msgA015
 
         Write-Warning -Message $MessageText
 
     }
 
-    $TextFileEncoding = $LocalizedStrings.msg32
+    $TextFileEncoding = $LocalizedStrings.msgA018
 
     #LocalizedStrings are not sorted alphabeticaly -even if you are using Sort-Object !
     #$LocalizedStrings
@@ -229,17 +229,17 @@ Function Format-Pester {
 
     $PScriboObject = Document $BaseFileName {
 
-        # Global options
-        GlobalOption -PageSize A4
+        # Document options
+        DocumentOption -PageSize A4
 
 
         #Variables used to create numbers for TOC and subsections
         $Head1Counter = 1
 
-        If (-not $SkipTableOfContent.ispresent) {
+        If (-not $SkipTableOfContent.IsPresent) {
 
             # Table of content header text
-            [String]$TOCName = $LocalizedStrings.msg01
+            [String]$TOCName = $LocalizedStrings.msgA001
 
             TOC -Name $TOCName
 
@@ -250,30 +250,39 @@ Function Format-Pester {
             # Columns used for the summary table
 
             #This variable can't be translated
-            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount')
+            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount','InconclusiveCount')
 
-            $SummaryColumnsHeaders = @($LocalizedStrings.msg02, $LocalizedStrings.msg03, $LocalizedStrings.msg04, $LocalizedStrings.msg05, $LocalizedStrings.msg06)
+            $SummaryColumnsHeaders = @($LocalizedStrings.msgA002, $LocalizedStrings.msgA003, $LocalizedStrings.msgA004, $LocalizedStrings.msgA005, $LocalizedStrings.msgA006, $LocalizedStrings.msgA007)
 
             # Style definitions used for the summary table
-            Style -Name Total -Color White -BackgroundColor Blue
-            Style -Name Passed -Color White -BackgroundColor Green
-            Style -Name Failed -Color White -BackgroundColor Red
-            Style -Name Other -Color White -BackgroundColor Gray
+            Style -Name SummaryRow -Color Black -BackgroundColor White
+            #Style -Name Total -Color White -BackgroundColor Blue
+            #Style -Name Passed -Color White -BackgroundColor Green
+            #Style -Name Failed -Color White -BackgroundColor Red
+            #Style -Name Other -Color White -BackgroundColor Gray
 
             # Results Summary
 
-            $ResultsSummaryTitle = "{0}.`t{1}" -f $Head1Counter, $LocalizedStrings.msg07
+            $ResultsSummaryTitle = "{0}.`t{1}" -f $Head1Counter, $LocalizedStrings.msgA008
 
             $Head1Counter++
 
             $ValidResults = $PesterResult | Where-Object { $null -ne $_.TotalCount } | Sort-Object -Property FailedCount -Descending
             Section -Name $ResultsSummaryTitle -Style Heading2 -ScriptBlock {
 
-                $ValidResults | Set-Style -Style 'Total' -Property 'TotalCount'
-                $ValidResults | Set-Style -Style 'Passed' -Property 'PassedCount'
-                $ValidResults | Set-Style -Style 'Failed' -Property 'FailedCount'
-                $ValidResults | Set-Style -Style 'Other' -Property 'SkippedCount'
-                $ValidResults | Set-Style -Style 'Other' -Property 'PendingCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'TotalCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'PassedCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'FailedCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'SkippedCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'PendingCount'
+                $ValidResults | Set-Style -Style 'SummaryRow' -Property 'InconclusiveCount'
+
+                # $ValidResults | Set-Style -Style 'Total' -Property 'TotalCount'
+                # $ValidResults | Set-Style -Style 'Passed' -Property 'PassedCount'
+                # $ValidResults | Set-Style -Style 'Failed' -Property 'FailedCount'
+                # $ValidResults | Set-Style -Style 'Other' -Property 'SkippedCount'
+                # $ValidResults | Set-Style -Style 'Other' -Property 'PendingCount'
+                # $ValidResults | Set-Style -Style 'Other' -Property 'InconclusiveCount'
                 $ValidResults | Table -Columns $SummaryColumnsData -Headers $SummaryColumnsHeaders -Width 90
 
             }
@@ -287,19 +296,52 @@ Function Format-Pester {
 
             [Array]$EvaluateResults = $null
 
-            If ((-not $PassedOnly.IsPresent) -and $PesterResult.FailedCount -gt 0) {
+            If ( $PassedOnly.IsPresent -and $PesterResult.PassedCount -gt 0) {
+
+                $EvaluateResults += 'Passed'
+
+            }
+            Elseif( $FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
 
                 $EvaluateResults += 'Failed'
 
             }
 
-            If ((-not $FailedOnly.IsPresent) -and $PesterResult.PassedCount -gt 0) {
+            Else {
 
-                $EvaluateResults += 'Passed'
+                If ((-not $PassedOnly.IsPresent) -and $PesterResult.FailedCount -gt 0) {
 
-                If ($Order -eq 'PassedFirst') {
+                    $EvaluateResults += 'Failed'
 
-                    $EvaluateResults = $($EvaluateResults | Sort-Object -Descending)
+                }
+
+                If ((-not $FailedOnly.IsPresent) -and $PesterResult.PassedCount -gt 0) {
+
+                    $EvaluateResults += 'Passed'
+
+                    If ($Order -eq 'PassedFirst') {
+
+                        $EvaluateResults = $($EvaluateResults | Sort-Object -Descending)
+
+                    }
+
+                }
+
+                If (((-not $PassedOnly.IsPresent) -or (-not $FailedOnly.IsPresent)) -and $PesterResult.SkippedCount -gt 0) {
+
+                    $EvaluateResults += 'Skipped'
+
+                }
+
+                If (((-not $PassedOnly.IsPresent) -or (-not $FailedOnly.IsPresent)) -and $PesterResult.PendingCount -gt 0) {
+
+                    $EvaluateResults += 'Pending'
+
+                }
+
+                If (((-not $PassedOnly.IsPresent) -or (-not $FailedOnly.IsPresent)) -and $PesterResult.InconclusiveCount -gt 0) {
+
+                    $EvaluateResults += 'Inconclusive'
 
                 }
 
@@ -311,54 +353,76 @@ Function Format-Pester {
 
                     'Passed' {
 
-                        $CurrentResultTypeLocalized = $LocalizedStrings.msg09
-
-                        $Head1SectionTitle = $LocalizedStrings.msg25
-
-                        $Header1TitlePart = $LocalizedStrings.msg10
-
-                        $Header2TitlePart = $LocalizedStrings.msg11
-
-                        $Header3TitlePart = $LocalizedStrings.msg12
-
-                        $VerboseMsgHeader2Part = $LocalizedStrings.msg13
-
-                        $VerboseMsgHeader3Part = $LocalizedStrings.msg14
+                        [String]$TranslationGroup = "B"
 
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
 
-                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msg15, $LocalizedStrings.msg16, $LocalizedStrings.msg17)
+                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
 
                     }
 
-
                     'Failed' {
 
-                        $CurrentResultTypeLocalized = $LocalizedStrings.msg18
-
-                        $Head1SectionTitle = $LocalizedStrings.msg26
-
-                        $Header1TitlePart = $LocalizedStrings.msg19
-
-                        $Header2TitlePart = $LocalizedStrings.msg20
-
-                        $Header3TitlePart = $LocalizedStrings.msg21
-
-                        $VerboseMsgHeader2Part = $LocalizedStrings.msg22
-
-                        $VerboseMsgHeader3Part = $LocalizedStrings.msg23
+                        [String]$TranslationGroup = "C"
 
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Context', 'Name', 'FailureMessage')
 
-                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msg16, $LocalizedStrings.msg17, $LocalizedStrings.msg24)
+                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA011, $LocalizedStrings.msgA012, $LocalizedStrings.msgC006)
+
+                    }
+
+                    'Skipped' {
+
+                        [String]$TranslationGroup = "D"
+
+                        #This variable can't be translated
+                        $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
+
+                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
+
+                    }
+
+                    'Pending' {
+
+                        [String]$TranslationGroup = "E"
+
+                        #This variable can't be translated
+                        $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
+
+                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
+
+                    }
+
+                    'Inconclusive' {
+
+                        [String]$TranslationGroup = "F"
+
+                        #This variable can't be translated
+                        $TestsResultsColumnsData = @('Context', 'Name', 'FailureMessage')
+
+                        $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA011, $LocalizedStrings.msgA012, $LocalizedStrings.msgF006)
 
                     }
 
                 }
 
-                $VerboseMsgMainLoop = $LocalizedStrings.msg08
+                $CurrentResultTypeLocalized = $LocalizedStrings.item($("msg{0}000" -f $TranslationGroup))
+
+                $Head1SectionTitle = $LocalizedStrings.item($("msg{0}007" -f $TranslationGroup))
+
+                $Header1TitlePart = $LocalizedStrings.item($("msg{0}001" -f $TranslationGroup))
+
+                $Header2TitlePart = $LocalizedStrings.item($("msg{0}002" -f $TranslationGroup))
+
+                $Header3TitlePart = $LocalizedStrings.item($("msg{0}003" -f $TranslationGroup))
+
+                $VerboseMsgHeader2Part = $LocalizedStrings.item($("msg{0}004" -f $TranslationGroup))
+
+                $VerboseMsgHeader3Part = $LocalizedStrings.item($("msg{0}005" -f $TranslationGroup))
+
+                $VerboseMsgMainLoop = $LocalizedStrings.msgA009
 
                 [String]$MessageText = "{0} {1} " -f $VerboseMsgMainLoop, $CurrentResultTypeLocalized
 
@@ -368,104 +432,102 @@ Function Format-Pester {
 
                 $Head3counter = 1
 
-                If (-not $PassedOnly.IsPresent) {
+                $CurrentPesterTestResults = $PesterTestsResults | Where-object -FilterScript { $_.Result -eq $CurrentResultType }
 
-                    $CurrentPesterTestResults = $PesterTestsResults | Where-object -FilterScript { $_.Result -eq $CurrentResultType }
+                If ($GroupResultsBy -eq 'Result') {
 
-                    If ($GroupResultsBy -eq 'Result') {
+                    [String]$Header1Title = "{0}.`t {1}" -f $Head1counter, $Header1TitlePart
 
-                        [String]$Header1Title = "{0}.`t {1}" -f $Head1counter, $Header1TitlePart
+                    Section -Name $Header1Title -Style Heading1   {
 
-                        Section -Name $Header1Title -Style Heading1   {
-
-                            $CurrentPesterTestResults |
-                            Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
-
-                        }
-
-                        $Head1counter++
+                        $CurrentPesterTestResults |
+                        Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
 
                     }
 
-                    Else {
+                    $Head1counter++
 
-                        Section -Name "$Head1Counter.`t $Head1SectionTitle " -Style Heading1 -ScriptBlock {
+                }
 
-                            #Get unique 'Describe' from Pester results
-                            [Array]$Headers2 = $CurrentPesterTestResults | Select-Object -Property Describe -Unique
+                Else {
 
-                            # Tests results details - Grouped by Describe
-                            foreach ($Header2 in $Headers2) {
+                    Section -Name "$Head1Counter.`t $Head1SectionTitle " -Style Heading1 -ScriptBlock {
 
-                                [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader2Part, $($Header2.Describe)
+                        #Get unique 'Describe' from Pester results
+                        [Array]$Headers2 = $CurrentPesterTestResults | Select-Object -Property Describe -Unique
 
-                                Write-Verbose -Message $MessageText
+                        # Tests results details - Grouped by Describe
+                        foreach ($Header2 in $Headers2) {
 
-                                $SubHeader2Number = "{0}.{1}" -f $Head1Counter, $Head2counter
+                            [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader2Part, $($Header2.Describe)
 
-                                [String]$Header2Title = "{0}.`t {1} {2}" -f $SubHeader2Number, $Header2TitlePart, $($Header2.Describe)
+                            Write-Verbose -Message $MessageText
 
-                                Section -Name $Header2Title -Style Heading2 -ScriptBlock {
+                            $SubHeader2Number = "{0}.{1}" -f $Head1Counter, $Head2counter
 
-                                    $CurrentPesterTestResults2 = $CurrentPesterTestResults | Where-Object -FilterScript { $_.Describe -eq $Header2.Describe }
+                            [String]$Header2Title = "{0}.`t {1} {2}" -f $SubHeader2Number, $Header2TitlePart, $($Header2.Describe)
 
-                                    If ($GroupResultsBy -eq 'Result-Describe-Context') {
+                            Section -Name $Header2Title -Style Heading2 -ScriptBlock {
 
-                                        [Array]$Headers3 = $CurrentPesterTestResults2 | Select-Object -Property Context -Unique
+                                $CurrentPesterTestResults2 = $CurrentPesterTestResults | Where-Object -FilterScript { $_.Describe -eq $Header2.Describe }
 
-                                        foreach ($Header3 in $Headers3) {
+                                $CurrentPesterTestResultsCount2 = ($CurrentPesterTestResults2 | Measure-Object).Count
 
-                                            [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader3Part, $($Header3.Context)
+                                If ($GroupResultsBy -eq 'Result-Describe-Context') {
 
-                                            Write-Verbose -Message $MessageText
+                                    [Array]$Headers3 = $CurrentPesterTestResults2 | Select-Object -Property Context -Unique
 
-                                            $CurrentPesterTestResults3 = $CurrentPesterTestResults2 | Where-Object -FilterScript { $_.Context -eq $Header3.Context }
+                                    foreach ($Header3 in $Headers3) {
 
-                                            $CurrentPesterTestResultsCount3 = ($CurrentPesterTestResults3 | Measure-Object).Count
-
-                                            $SubHeader3Number = "{0}.{1}.{2}" -f $Head1Counter, $Head2counter, $Head3counter
-
-                                            [String]$Header3Title = "{0}.`t {1} {2}" -f $SubHeader3Number, $Header3TitlePart, $($Header3.Context)
-
-                                            Section -Name $Header3Title -Style Heading3 -ScriptBlock {
-
-                                                $MessageText = "{0} {1} {2}, {3} {4}" -f $LocalizedStrings.msg30, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msg31, $CurrentPesterTestResultsCount3
-
-                                                Write-Verbose -Message $MessageText
-
-                                                $CurrentPesterTestResults3 |
-                                                Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
-                                            }
-
-                                            $Head3Counter++
-
-                                        }
-
-                                    } #$GroupResultsBy -eq 'Result-Describe-Context'
-                                    Else {
-
-                                        $MessageText = "{0} {1} {2}, {3}: {4}" -f $LocalizedStrings.msg30, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msg31, $CurrentPesterTestResultsCount3
+                                        [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader3Part, $($Header3.Context)
 
                                         Write-Verbose -Message $MessageText
 
-                                        $CurrentPesterTestResults2 |
-                                        Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
+                                        $CurrentPesterTestResults3 = $CurrentPesterTestResults2 | Where-Object -FilterScript { $_.Context -eq $Header3.Context }
+
+                                        $CurrentPesterTestResultsCount3 = ($CurrentPesterTestResults3 | Measure-Object).Count
+
+                                        $SubHeader3Number = "{0}.{1}.{2}" -f $Head1Counter, $Head2counter, $Head3counter
+
+                                        [String]$Header3Title = "{0}.`t {1} {2}" -f $SubHeader3Number, $Header3TitlePart, $($Header3.Context)
+
+                                        Section -Name $Header3Title -Style Heading3 -ScriptBlock {
+
+                                            $MessageText = "{0} {1} {2}, {3} {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount3
+
+                                            Write-Verbose -Message $MessageText
+
+                                            $CurrentPesterTestResults3 |
+                                            Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
+                                        }
+
+                                        $Head3Counter++
 
                                     }
 
+                                } #$GroupResultsBy -eq 'Result-Describe-Context'
+                                Else {
+
+                                    $MessageText = "{0} {1} {2}, {3}: {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA17, $CurrentPesterTestResultsCount3
+
+                                    Write-Verbose -Message $MessageText
+
+                                    $CurrentPesterTestResults2 |
+                                    Table -Columns $TestsResultsColumnsData -Headers $TestsResultsColumnsHeaders -Width 90
+
                                 }
 
-                                $Head2counter++
+                            }
 
-                            } #end foreach ($Header2 in $Headers2)
+                            $Head2counter++
 
-                        }
+                        } #end foreach ($Header2 in $Headers2)
 
-                        $Head1Counter++
+                    }
 
-                    } #end $GroupResultsBy -ne 'Result'
+                    $Head1Counter++
 
-                }
+                } #end $GroupResultsBy -ne 'Result'
 
             }
 

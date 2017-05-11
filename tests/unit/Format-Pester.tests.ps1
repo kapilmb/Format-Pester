@@ -30,6 +30,7 @@ function New-MockedTestResultCollection
         [int] $failedCount = 0,
         [int] $skippedCount = 0,
         [int] $pendingCount = 0,
+        [int] $inconclusiveCount = 0,
         [object[]] $testResult
     )
         $mockedTestResult = [PSCustomObject] @{
@@ -37,7 +38,8 @@ function New-MockedTestResultCollection
             FailedCount = $failedCount
             SkippedCount = $skippedCount
             PendingCount = $pendingCount
-            TotalCount = $passedCount+$failedCount+$skippedCount+$pendingCount
+            InconclusiveCount = $inconclusiveCount
+            TotalCount = $passedCount+$failedCount+$skippedCount+$pendingCount+$inconclusiveCount
             TestResult = $testResult
         }
         return $mockedTestResult
