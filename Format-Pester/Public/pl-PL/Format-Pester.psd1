@@ -24,7 +24,7 @@ ConvertFrom-StringData @'
     msgA005=Testy pominięte
     msgA006=Testy trwające
     msgA007=Nierozstrzygnięte
-    msgA008=Podsumowanie testów
+    msgA008=Podsumowanie wyników testów
     msgA009=Przetwarzanie rezultatów testów dla
     msgA010=Describe
     msgA011=Context
@@ -69,7 +69,7 @@ ConvertFrom-StringData @'
     msgE005=Znaleziono trwające testy dla bloku Context
     msgE006=Komunikat trwającego testu
     msgE007=Trwające testy
-    msgF000=Niezdane
+    msgF000=Nierozstrzygnięte
     msgF001=Szczegóły nierozstrzygniętych testów
     msgF002=Szczegóły nierozstrzygniętych testów dla bloku Describe:
     msgF003=Szczegóły nierozstrzygniętych testów dla bloku Context:
