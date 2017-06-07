@@ -76,6 +76,9 @@ Function Format-Pester {
     When DumpPscriboObject is used the result of the function is custom object containing PScribo Document.
     Use this parameter for prepare tests or debug of document generation.
 
+    .PARAMETER PassThru
+
+
     .INPUTS
     An expected input is the result of the command Invoke-Pester with the parameter -PassThru.
     With that command Invoke-Pester returns a custom object (PSCustomObject) that contains the test results.
@@ -244,7 +247,21 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'PendingOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'InconclusiveOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
-        [Switch]$DumpPScriboObject
+        [Parameter(Mandatory = $false, ParameterSetName = 'DumpPScriboObjectParamSet')]
+        [Switch]$DumpPScriboObject,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'SkippedOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'PendingOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'InconclusiveOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'PassThruParamSet')]
+        [Switch]$PassThru
+
     )
 
     [Version]$ScriptVersion = "1.5.0"
@@ -693,6 +710,6 @@ Function Format-Pester {
 
     }
 
-        $PScriboObject | Export-Document -Path $Path -Format $Format @exportParams
+        $PScriboObject | Export-Document -Path $Path -Format $Format -Options @exportParams #-PassThru $PassThru
 
 }
