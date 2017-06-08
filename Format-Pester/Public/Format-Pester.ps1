@@ -383,7 +383,7 @@ Function Format-Pester {
 
             [Array]$EvaluateResults = $null
 
-            If ( $PassedOnly.IsPresent ) {
+            If ( $PassedOnly.IsPresent -and $PesterResult.PassedCount -gt 0 ) {
 
                 [String]$MessageText = "The parameter PassedOnly is deprecated and will be removed in the further version of Format-Pester. Please use the parameters Include and Exclude instead."
 
