@@ -1,5 +1,5 @@
-Function Format-Pester {
-<#
+﻿Function Format-Pester {
+    <#
     .SYNOPSIS
     Document Pester's tests results into the selected format (HTML, Word, Text).
 
@@ -185,14 +185,14 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
         [ValidateNotNullorEmpty()]
-        [ValidateSet('All','Passed','Failed','Skipped','Pending','Inconclusive')]
+        [ValidateSet('All', 'Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')]
         [String[]]$Include = 'All',
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
-        [ValidateSet('Passed','Failed','Skipped','Pending','Inconclusive')]
+        [ValidateSet('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')]
         [String[]]$Exclude,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
@@ -305,11 +305,11 @@ Function Format-Pester {
     #$LocalizedStrings
 
     $exportParams = @{ }
-#     if ($Format -contains 'HTML') {
+    #     if ($Format -contains 'HTML') {
 
-# #        $exportParams.Add("NoPageLayoutStyle",$true)
+    # #        $exportParams.Add("NoPageLayoutStyle",$true)
 
-#     }
+    #     }
     if ($Format -contains 'text' -and $TextFileEncoding -ne 'ASCII') {
 
         $exportParams.add("Encoding", $TextFileEncoding)
@@ -337,7 +337,7 @@ Function Format-Pester {
         # Test results names
 
         #This variable can't be translated
-        $TestResultsNames = @('Passed','Failed','Skipped','Pending','Inconclusive')
+        $TestResultsNames = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
 
         $ResultsOrderInternal = @()
 
@@ -349,7 +349,7 @@ Function Format-Pester {
             # Columns used for the summary table
 
             #This variable can't be translated
-            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount','InconclusiveCount')
+            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount', 'InconclusiveCount')
 
             $SummaryColumnsHeaders = @($LocalizedStrings.msgA002, $LocalizedStrings.msgA003, $LocalizedStrings.msgA004, $LocalizedStrings.msgA005, $LocalizedStrings.msgA006, $LocalizedStrings.msgA007)
 
@@ -392,7 +392,7 @@ Function Format-Pester {
                 $EvaluateResults += 'Passed'
 
             }
-            Elseif( $FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
+            Elseif ( $FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
 
                 [String]$MessageText = "The parameter FailedOnly is deprecated and will be removed in the further version of Format-Pester. Please use the parameters Include and Exclude instead."
 
@@ -438,7 +438,7 @@ Function Format-Pester {
 
                     Write-Warning -Message $MessageText
 
-                    $ResultsOrderInternal = @('Passed','Failed','Skipped','Pending','Inconclusive')
+                    $ResultsOrderInternal = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
 
                     If ( $IncludeInternal -notcontains 'Passed' ) {
 
@@ -455,7 +455,7 @@ Function Format-Pester {
 
                     Write-Warning -Message $MessageText
 
-                    $ResultsOrderInternal = @('Failed','Passed','Skipped','Pending','Inconclusive')
+                    $ResultsOrderInternal = @('Failed', 'Passed', 'Skipped', 'Pending', 'Inconclusive')
 
                     If ( $IncludeInternal -notcontains 'Passed' ) {
 
@@ -468,7 +468,7 @@ Function Format-Pester {
                 }
                 ElseIf ( [String]::IsNullOrEmpty($ResultsOrder) ) {
 
-                    $ResultsOrderInternal = @('Passed','Failed','Skipped','Pending','Inconclusive')
+                    $ResultsOrderInternal = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
 
                 }
                 Else {
@@ -638,10 +638,10 @@ Function Format-Pester {
 
                     [String]$Header1Title = "{0}.`t {1}" -f $Head1counter, $Header1TitlePart
 
-                    Section -Name $Header1Title -Style Heading1   {
+                    Section -Name $Header1Title -Style Heading1 {
 
                         $CurrentPesterTestResults |
-                        Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
+                            Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
 
                     }
 
@@ -698,7 +698,7 @@ Function Format-Pester {
                                             Write-Verbose -Message $MessageText
 
                                             $CurrentPesterTestResults3 |
-                                            Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
+                                                Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
                                         }
 
                                         $Head3Counter++
@@ -713,7 +713,7 @@ Function Format-Pester {
                                     Write-Verbose -Message $MessageText
 
                                     $CurrentPesterTestResults2 |
-                                    Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
+                                        Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
 
                                 }
 
@@ -741,6 +741,6 @@ Function Format-Pester {
 
     }
 
-        $PScriboObject | Export-Document -Path $Path -Format $Format -Options $exportParams #-PassThru $PassThru
+    $PScriboObject | Export-Document -Path $Path -Format $Format -Options $exportParams #-PassThru $PassThru
 
 }
