@@ -117,7 +117,7 @@ Function Format-Pester {
     Licensed under the MIT License - https://github.com/equelin/Format-Pester/blob/master/LICENSE
 
     #>
-
+    
     [CmdletBinding(DefaultParameterSetName = 'AllParamSet')]
     [OutputType([IO.FileInfo])]
     Param (
@@ -130,7 +130,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $True, ValueFromPipelinebyPropertyName = $True, HelpMessage = 'Pester results Object', ParameterSetName = 'SummaryOnlyParamSet')]
         [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $True, ValueFromPipelinebyPropertyName = $True, HelpMessage = 'Pester results Object', ParameterSetName = 'VersionOnlyParamSet')]
         [Array]$PesterResult,
-
         [Parameter(Mandatory = $true, HelpMessage = 'PScribo export format', ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $true, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $true, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -141,7 +140,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'VersionOnlyParamSet')]
         [ValidateSet('Text', 'Word', 'HTML')]
         [String[]]$Format,
-
         [Parameter(Mandatory = $false, HelpMessage = 'PScribo export path', ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, HelpMessage = 'PScribo export path', ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, HelpMessage = 'PScribo export path', ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -151,7 +149,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, HelpMessage = 'PScribo export path', ParameterSetName = 'SummaryOnlyParamSet')]
         [ValidateNotNullorEmpty()]
         [String]$Path = (Get-Location -PSProvider FileSystem),
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -161,52 +158,43 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [ValidateNotNullorEmpty()]
         [string]$BaseFileName = 'Pester_Results',
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
         [String[]]$ResultsOrder,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
         [ValidateSet('FailedFirst', 'PassedFirst')]
         [String]$Order,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
         [ValidateSet('Result', 'Result-Describe', 'Result-Describe-Context')]
         [String]$GroupResultsBy = 'Result',
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
         [ValidateNotNullorEmpty()]
-        [ValidateSet('All','Passed','Failed','Skipped','Pending','Inconclusive')]
+        [ValidateSet('All', 'Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')]
         [String[]]$Include = 'All',
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeExcludeParamSet')]
-        [ValidateSet('Passed','Failed','Skipped','Pending','Inconclusive')]
+        [ValidateSet('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')]
         [String[]]$Exclude,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
         [Switch]$PassedOnly,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
         [Switch]$FailedOnly,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [switch]$SummaryOnly,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -215,7 +203,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [Switch]$SkipTableOfContent,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -223,7 +210,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
         [Switch]$SkipSummary,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -232,10 +218,8 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [String]$Language = $($(Get-Culture).Name),
-
         [Parameter(Mandatory = $false, ParameterSetName = 'VersionOnlyParamSet')]
         [Switch]$Version,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -245,7 +229,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DumpPScriboObjectParamSet')]
         [Switch]$DumpPScriboObject,
-
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'ResultOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
@@ -255,492 +238,501 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'PassThruParamSet')]
         [Switch]$PassThru
-
+        
     )
-
+    
     [Version]$ScriptVersion = "1.5.0"
-
+    
     If ($Version.IsPresent) {
-
+        
         Return $ScriptVersion.ToString()
-
+        
         Break
-
+        
     }
     Else {
-
+        
         if ($null -eq $PesterResult) {
-
+            
             $MessageText = "Value of the parameter PesterResult can't be null or empty."
-
+            
             Throw $MessageText
-
+            
         }
-
+        
     }
-
+    
     Import-LocalizedData -FileName Format-Pester.psd1 -BindingVariable LocalizedStrings -UICulture $Language -ErrorAction SilentlyContinue
-
+    
     If ([String]::IsNullOrEmpty($LocalizedStrings)) {
-
+        
         Import-LocalizedData -FileName Format-Pester.psd1 -BindingVariable LocalizedStrings -UICulture 'en-US' -ErrorAction Stop
-
+        
         [String]$MessageText = "{0} {1} {2}" -f $LocalizedStrings.msgA013, $Language, $LocalizedStrings.msgA014
-
+        
         Write-Verbose -Message $MessageText
-
+        
     }
-
+    
     If ($LocalizedStrings.msgA000 -ne $ScriptVersion) {
-
+        
         [String]$MessageText = "{0}" -f $LocalizedStrings.msgA015
-
+        
         Write-Warning -Message $MessageText
-
+        
     }
-
+    
     $TextFileEncoding = $LocalizedStrings.msgA018
-
+    
     #LocalizedStrings are not sorted alphabeticaly -even if you are using Sort-Object !
     #$LocalizedStrings
-
-    $exportParams = @{ }
-#     if ($Format -contains 'HTML') {
-
-# #        $exportParams.Add("NoPageLayoutStyle",$true)
-
-#     }
-    if ($Format -contains 'text' -and $TextFileEncoding -ne 'ASCII') {
-
-        $exportParams.add("Encoding", $TextFileEncoding)
-
+    
+    $exportParams = @{
     }
-
+    #     if ($Format -contains 'HTML') {
+    
+    # #        $exportParams.Add("NoPageLayoutStyle",$true)
+    
+    #     }
+    if ($Format -contains 'text' -and $TextFileEncoding -ne 'ASCII') {
+        
+        $exportParams.add("Encoding", $TextFileEncoding)
+        
+    }
+    
     $PScriboObject = Document $BaseFileName {
-
+        
         # Document options
         DocumentOption -PageSize A4
-
+        
         #Variables used to create numbers for TOC and subsections
         $Head1Counter = 1
-
+        
         If (-not $SkipTableOfContent.IsPresent) {
-
+            
             # Table of content header text
             [String]$TOCName = $LocalizedStrings.msgA001
-
+            
             TOC -Name $TOCName
-
+            
         }
-
-
+        
+        
         # Test results names
-
+        
         #This variable can't be translated
-        $TestResultsNames = @('Passed','Failed','Skipped','Pending','Inconclusive')
-
+        $TestResultsNames = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
+        
         $ResultsOrderInternal = @()
-
+        
         #ValidResulsts are used by ResultsOrder too
-        $ValidResults = $PesterResult | Where-Object { $null -ne $_.TotalCount } | Sort-Object -Property FailedCount -Descending
-
+        $ValidResults = $PesterResult | Where-Object {
+            $null -ne $_.TotalCount
+        } | Sort-Object -Property FailedCount -Descending
+        
         If (-not $SkipSummary.IsPresent) {
-
+            
             # Columns used for the summary table
-
+            
             #This variable can't be translated
-            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount','InconclusiveCount')
-
+            $SummaryColumnsData = @('TotalCount', 'PassedCount', 'FailedCount', 'SkippedCount', 'PendingCount', 'InconclusiveCount')
+            
             $SummaryColumnsHeaders = @($LocalizedStrings.msgA002, $LocalizedStrings.msgA003, $LocalizedStrings.msgA004, $LocalizedStrings.msgA005, $LocalizedStrings.msgA006, $LocalizedStrings.msgA007)
-
+            
             # Style definitions used for the summary table
             Style -Name SummaryRow -Color Black -BackgroundColor White -Align Center
-
+            
             # Results Summary
             $ResultsSummaryTitle = "{0}.`t{1}" -f $Head1Counter, $LocalizedStrings.msgA008
-
+            
             $Head1Counter++
-
+            
             Section -Name $ResultsSummaryTitle -Style Heading2 -ScriptBlock {
-
+                
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'TotalCount'
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'PassedCount'
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'FailedCount'
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'SkippedCount'
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'PendingCount'
                 $ValidResults | Set-Style -Style 'SummaryRow' -Property 'InconclusiveCount'
-
+                
                 $ValidResults | Table -Columns $SummaryColumnsData -Headers $SummaryColumnsHeaders -Width 90
-
+                
             }
-
+            
         }
-
+        
         If (-not $SummaryOnly.IsPresent) {
-
+            
             #Expanding Pester summary to receive all tests results
             $PesterTestsResults = $PesterResult | Select-Object -ExpandProperty TestResult
-
+            
             [Array]$EvaluateResults = $null
-
-            If ( $PassedOnly.IsPresent -and $PesterResult.PassedCount -gt 0 ) {
-
+            
+            If ($PassedOnly.IsPresent -and $PesterResult.PassedCount -gt 0) {
+                
                 [String]$MessageText = "The parameter PassedOnly is deprecated and will be removed in the further version of Format-Pester. Please use the parameters Include and Exclude instead."
-
+                
                 Write-Warning -Message $MessageText
-
+                
                 $EvaluateResults += 'Passed'
-
+                
             }
-            Elseif( $FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
-
+            Elseif ($FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
+                
                 [String]$MessageText = "The parameter FailedOnly is deprecated and will be removed in the further version of Format-Pester. Please use the parameters Include and Exclude instead."
-
+                
                 Write-Warning -Message $MessageText
-
+                
                 $EvaluateResults += 'Failed'
-
+                
             }
             Else {
-
-                If ( $Include -eq 'All' ) {
-
+                
+                If ($Include -eq 'All') {
+                    
                     $Include = $TestResultsNames
-
+                    
                 }
-
-                $ExcludeCount = ($Exclude | Measure-Object ).Count
-
-                If ( $ExcludeCount -gt 0) {
-
+                
+                $ExcludeCount = ($Exclude | Measure-Object).Count
+                
+                If ($ExcludeCount -gt 0) {
+                    
                     $IncludeInternal = @()
-
-                    ForEach ( $CurrentInclude in $Include ) {
-
-                        If ( $Exclude -notcontains $CurrentInclude ) {
-
+                    
+                    ForEach ($CurrentInclude in $Include) {
+                        
+                        If ($Exclude -notcontains $CurrentInclude) {
+                            
                             $IncludeInternal += $CurrentInclude
-
+                            
                         }
-
+                        
                     }
-
+                    
                 }
                 Else {
-
+                    
                     $IncludeInternal = $Include
-
+                    
                 }
-
-                If ( $Order -eq 'PassedFirst' ) {
-
+                
+                If ($Order -eq 'PassedFirst') {
+                    
                     [String]$MessageText = "The parameter Order is deprecated and will be removed in the further version of Format-Pester. Please use the parameter ResultOrder instead."
-
+                    
                     Write-Warning -Message $MessageText
-
-                    $ResultsOrderInternal = @('Passed','Failed','Skipped','Pending','Inconclusive')
-
-                    If ( $IncludeInternal -notcontains 'Passed' ) {
-
+                    
+                    $ResultsOrderInternal = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
+                    
+                    If ($IncludeInternal -notcontains 'Passed') {
+                        
                         [String]$MessageText = "The parameter PassedFirst parameter was used but Passed results are not included in the report."
-
+                        
                         Write-Warning -Message $MessageText
-
+                        
                     }
-
+                    
                 }
-                ElseIf ( $Order -eq 'FailedFirst' ) {
-
+                ElseIf ($Order -eq 'FailedFirst') {
+                    
                     [String]$MessageText = "The parameter Order is deprecated and will be removed in the further version of Format-Pester. Please use the parameter ResultOrder instead."
-
+                    
                     Write-Warning -Message $MessageText
-
-                    $ResultsOrderInternal = @('Failed','Passed','Skipped','Pending','Inconclusive')
-
-                    If ( $IncludeInternal -notcontains 'Passed' ) {
-
+                    
+                    $ResultsOrderInternal = @('Failed', 'Passed', 'Skipped', 'Pending', 'Inconclusive')
+                    
+                    If ($IncludeInternal -notcontains 'Passed') {
+                        
                         [String]$MessageText = "The parameter PassedFirst parameter was used but Passed results are not included in the report."
-
+                        
                         Write-Warning -Message $MessageText
-
+                        
                     }
-
+                    
                 }
-                ElseIf ( [String]::IsNullOrEmpty($ResultsOrder) ) {
-
-                    $ResultsOrderInternal = @('Passed','Failed','Skipped','Pending','Inconclusive')
-
+                ElseIf ([String]::IsNullOrEmpty($ResultsOrder)) {
+                    
+                    $ResultsOrderInternal = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
+                    
                 }
                 Else {
-
-                    ForEach ( $CurrentResult in $ResultsOrder ) {
-
-                        If ( $TestResultsNames -contains $CurrentResult) {
-
-                            If ( $ResultsOrderInternal -contains $CurrentResult ) {
-
+                    
+                    ForEach ($CurrentResult in $ResultsOrder) {
+                        
+                        If ($TestResultsNames -contains $CurrentResult) {
+                            
+                            If ($ResultsOrderInternal -contains $CurrentResult) {
+                                
                                 [String]$MessageText = "The test result named: {0} is duplicated in the ResultOrder parameter values. It will be skipped to avoid duplicating of a report section." -f $CurrentResult
-
+                                
                                 Write-Warning -Message $MessageText
-
+                                
                             }
                             else {
-
+                                
                                 $ResultsOrderInternal += $CurrentResult
-
+                                
                             }
-
+                            
                         }
                         Else {
-
+                            
                             [String]$MessageText = "The test result named: {0} in unrecognized and will not be included in a report." -f $CurrentResult
-
+                            
                             Write-Warning -Message $MessageText
-
+                            
                         }
-
+                        
                     }
-
+                    
                 }
-
+                
                 $MissedResultsNames = @()
-
-                ForEach ( $CurrentResultTestName in $TestResultsNames ) {
-
-                    If ( $ResultsOrderInternal -notcontains $CurrentResultTestName ) {
-
+                
+                ForEach ($CurrentResultTestName in $TestResultsNames) {
+                    
+                    If ($ResultsOrderInternal -notcontains $CurrentResultTestName) {
+                        
                         $MissedResultsNames += $CurrentResultTestName
-
+                        
                     }
-
+                    
                 }
-
-                If ( $MissedResultsNames.count -gt 0 ) {
-
-                    ForEach ( $CurrentMissedResultName in $MissedResultsNames ) {
-
+                
+                If ($MissedResultsNames.count -gt 0) {
+                    
+                    ForEach ($CurrentMissedResultName in $MissedResultsNames) {
+                        
                         $ResultsOrderInternal += $CurrentMissedResultName
-
+                        
                     }
-
+                    
                 }
-
-                ForEach ( $CurrentResultTestName in $ResultsOrderInternal ) {
-
-                    If ( $IncludeInternal -contains $CurrentResultTestName ) {
-
+                
+                ForEach ($CurrentResultTestName in $ResultsOrderInternal) {
+                    
+                    If ($IncludeInternal -contains $CurrentResultTestName) {
+                        
                         [String]$CurrentTestCountName = "{0}Count" -f $CurrentResultTestName
-
-                        If ( $PesterResult.$CurrentTestCountName -gt 0 ) {
-
+                        
+                        If ($PesterResult.$CurrentTestCountName -gt 0) {
+                            
                             [String]$MessageText = "{0} value: {1}" -f $CurrentTestCountName, $PesterResult.$CurrentTestCountName
-
+                            
                             Write-Verbose -Message $MessageText
-
+                            
                             $EvaluateResults += $CurrentResultTestName
-
+                            
                         }
-
+                        
                     }
-
+                    
                 }
-
+                
             }
-
+            
             foreach ($CurrentResultType in $EvaluateResults) {
-
+                
                 switch ($CurrentResultType) {
-
+                    
                     'Passed' {
-
+                        
                         [String]$TranslationGroup = "B"
-
+                        
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
-
+                        
                         $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
-
+                        
                     }
-
+                    
                     'Failed' {
-
+                        
                         [String]$TranslationGroup = "C"
-
+                        
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Context', 'Name', 'FailureMessage')
-
+                        
                         $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA011, $LocalizedStrings.msgA012, $LocalizedStrings.msgC006)
-
+                        
                     }
-
+                    
                     'Skipped' {
-
+                        
                         [String]$TranslationGroup = "D"
-
+                        
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
-
+                        
                         $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
-
+                        
                     }
-
+                    
                     'Pending' {
-
+                        
                         [String]$TranslationGroup = "E"
-
+                        
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Describe', 'Context', 'Name')
-
+                        
                         $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA010, $LocalizedStrings.msgA011, $LocalizedStrings.msgA012)
-
+                        
                     }
-
+                    
                     'Inconclusive' {
-
+                        
                         [String]$TranslationGroup = "F"
-
+                        
                         #This variable can't be translated
                         $TestsResultsColumnsData = @('Context', 'Name', 'FailureMessage')
-
+                        
                         $TestsResultsColumnsHeaders = @($LocalizedStrings.msgA011, $LocalizedStrings.msgA012, $LocalizedStrings.msgF006)
-
+                        
                     }
-
+                    
                 }
-
+                
                 $CurrentResultTypeLocalized = $LocalizedStrings.item($("msg{0}000" -f $TranslationGroup))
-
+                
                 $Head1SectionTitle = $LocalizedStrings.item($("msg{0}007" -f $TranslationGroup))
-
+                
                 $Header1TitlePart = $LocalizedStrings.item($("msg{0}001" -f $TranslationGroup))
-
+                
                 $Header2TitlePart = $LocalizedStrings.item($("msg{0}002" -f $TranslationGroup))
-
+                
                 $Header3TitlePart = $LocalizedStrings.item($("msg{0}003" -f $TranslationGroup))
-
+                
                 $VerboseMsgHeader2Part = $LocalizedStrings.item($("msg{0}004" -f $TranslationGroup))
-
+                
                 $VerboseMsgHeader3Part = $LocalizedStrings.item($("msg{0}005" -f $TranslationGroup))
-
+                
                 $VerboseMsgMainLoop = $LocalizedStrings.msgA009
-
+                
                 [String]$MessageText = "{0} {1} " -f $VerboseMsgMainLoop, $CurrentResultTypeLocalized
-
+                
                 Write-Verbose -Message $MessageText
-
+                
                 $Head2counter = 1
-
+                
                 $Head3counter = 1
-
-                $CurrentPesterTestResults = $PesterTestsResults | Where-object -FilterScript { $_.Result -eq $CurrentResultType }
-
-                If ($GroupResultsBy -eq 'Result') {
-
-                    [String]$Header1Title = "{0}.`t {1}" -f $Head1counter, $Header1TitlePart
-
-                    Section -Name $Header1Title -Style Heading1   {
-
-                        $CurrentPesterTestResults |
-                        Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
-
-                    }
-
-                    $Head1counter++
-
+                
+                $CurrentPesterTestResults = $PesterTestsResults | Where-object -FilterScript {
+                    $_.Result -eq $CurrentResultType
                 }
-
+                
+                If ($GroupResultsBy -eq 'Result') {
+                    
+                    [String]$Header1Title = "{0}.`t {1}" -f $Head1counter, $Header1TitlePart
+                    
+                    Section -Name $Header1Title -Style Heading1   {
+                        
+                        $CurrentPesterTestResults |
+                        Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
+                        
+                    }
+                    
+                    $Head1counter++
+                    
+                }
+                
                 Else {
-
+                    
                     Section -Name "$Head1Counter.`t $Head1SectionTitle " -Style Heading1 -ScriptBlock {
-
+                        
                         #Get unique 'Describe' from Pester results
                         [Array]$Headers2 = $CurrentPesterTestResults | Select-Object -Property Describe -Unique
-
+                        
                         # Tests results details - Grouped by Describe
                         foreach ($Header2 in $Headers2) {
-
+                            
                             [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader2Part, $($Header2.Describe)
-
+                            
                             Write-Verbose -Message $MessageText
-
+                            
                             $SubHeader2Number = "{0}.{1}" -f $Head1Counter, $Head2counter
-
+                            
                             [String]$Header2Title = "{0}.`t {1} {2}" -f $SubHeader2Number, $Header2TitlePart, $($Header2.Describe)
-
+                            
                             Section -Name $Header2Title -Style Heading2 -ScriptBlock {
-
-                                $CurrentPesterTestResults2 = $CurrentPesterTestResults | Where-Object -FilterScript { $_.Describe -eq $Header2.Describe }
-
+                                
+                                $CurrentPesterTestResults2 = $CurrentPesterTestResults | Where-Object -FilterScript {
+                                    $_.Describe -eq $Header2.Describe
+                                }
+                                
                                 $CurrentPesterTestResultsCount2 = ($CurrentPesterTestResults2 | Measure-Object).Count
-
+                                
                                 If ($GroupResultsBy -eq 'Result-Describe-Context') {
-
+                                    
                                     [Array]$Headers3 = $CurrentPesterTestResults2 | Select-Object -Property Context -Unique
-
+                                    
                                     foreach ($Header3 in $Headers3) {
-
+                                        
                                         [String]$MessageText = "{0}: {1} " -f $VerboseMsgHeader3Part, $($Header3.Context)
-
+                                        
                                         Write-Verbose -Message $MessageText
-
-                                        $CurrentPesterTestResults3 = $CurrentPesterTestResults2 | Where-Object -FilterScript { $_.Context -eq $Header3.Context }
-
-                                        $CurrentPesterTestResultsCount3 = ($CurrentPesterTestResults3 | Measure-Object).Count
-
-                                        $SubHeader3Number = "{0}.{1}.{2}" -f $Head1Counter, $Head2counter, $Head3counter
-
-                                        [String]$Header3Title = "{0}.`t {1} {2}" -f $SubHeader3Number, $Header3TitlePart, $($Header3.Context)
-
-                                        Section -Name $Header3Title -Style Heading3 -ScriptBlock {
-
-                                            [String]$MessageText = "{0} {1} {2}, {3} {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount3
-
-                                            Write-Verbose -Message $MessageText
-
-                                            $CurrentPesterTestResults3 |
-                                            Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
+                                        
+                                        $CurrentPesterTestResults3 = $CurrentPesterTestResults2 | Where-Object -FilterScript {
+                                            $_.Context -eq $Header3.Context
                                         }
-
+                                        
+                                        $CurrentPesterTestResultsCount3 = ($CurrentPesterTestResults3 | Measure-Object).Count
+                                        
+                                        $SubHeader3Number = "{0}.{1}.{2}" -f $Head1Counter, $Head2counter, $Head3counter
+                                        
+                                        [String]$Header3Title = "{0}.`t {1} {2}" -f $SubHeader3Number, $Header3TitlePart, $($Header3.Context)
+                                        
+                                        Section -Name $Header3Title -Style Heading3 -ScriptBlock {
+                                            
+                                            [String]$MessageText = "{0} {1} {2}, {3} {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount3
+                                            
+                                            Write-Verbose -Message $MessageText
+                                            
+                                            $CurrentPesterTestResults3 |
+                                            Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
+                                        }
+                                        
                                         $Head3Counter++
-
+                                        
                                     }
-
+                                    
                                 } #$GroupResultsBy -eq 'Result-Describe-Context'
                                 Else {
-
+                                    
                                     [String]$MessageText = "{0} {1} {2}, {3}: {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA17, $CurrentPesterTestResultsCount3
-
+                                    
                                     Write-Verbose -Message $MessageText
-
+                                    
                                     $CurrentPesterTestResults2 |
-                                    Table -Columns $TestsResultsColumnsData -ColumnWidths @(34,33,33) -Headers $TestsResultsColumnsHeaders -Width 90
-
+                                    Table -Columns $TestsResultsColumnsData -ColumnWidths @(34, 33, 33) -Headers $TestsResultsColumnsHeaders -Width 90
+                                    
                                 }
-
+                                
                             }
-
+                            
                             $Head2counter++
-
+                            
                         } #end foreach ($Header2 in $Headers2)
-
+                        
                     }
-
+                    
                     $Head1Counter++
-
+                    
                 } #end $GroupResultsBy -ne 'Result'
-
+                
             }
-
+            
         }
-
+        
     }
-
+    
     If ($DumpPScriboObject.IsPresent) {
-
+        
         Return $PScriboObject
-
+        
     }
-
-        $PScriboObject | Export-Document -Path $Path -Format $Format -Options $exportParams #-PassThru $PassThru
-
+    
+    $PScriboObject | Export-Document -Path $Path -Format $Format -Options $exportParams #-PassThru $PassThru
+    
 }
