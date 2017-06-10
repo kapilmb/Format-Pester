@@ -8,6 +8,7 @@
 
 # Groups of translation strings
 # A = general
+# X - temporary deprecation messages
 # B = passed tests
 # C = failed tests
 # D = skipped tests
@@ -37,6 +38,14 @@ ConvertFrom-StringData @'
     #Type of encoding used for write text files
     #Suppurted vales: ASCII,Unicode,UTF7,UTF8
     msgA018=UTF8
+    msgA019 = Wartość parametru PesterResult nie może być pusta.
+    msgA020 = Nazwa wyniku testu: '{0}' jest powielona w wartości parametru ResultOrder. Duplikat zostanie pominięty by uniknąć powielenia sekcji dokumentu.
+    msgA021 = Nazwa wyniku testu: '{0}' jest nierozpoznana i nie zostanie uwzględniona w dokumencie. Muszą zostać użyte angielskie nazwy wyników testów.
+    msgA022 = Dokumenty zostaną wyeksportowane przy użyciu ustawień:
+    msgX001 = Użycie parametru '{0}' jest niepożądane gdyż zostanie on usunięty w przyszłej wersji Format-Pester. Proszę użyć parametru Include.
+    msgX002 = Użycie parametru Order jest niepożądane gdyż zostanie on usunięty w przyszłej wersji Format-Pester. Proszę użyć parametru ResultOrder.
+    msgX003 = Został użyty parametr PassedFirst ale rezultaty zdanych testów nie są ujęte w raporcie.
+    msgX004 = Został użyty parametr FailedFirst ale rezultaty niezdanych testów nie są ujęte w raporcie.
     msgB000=Zdane
     msgB001=Szczegóły zdanych testów
     msgB002=Szczegóły zdanych testów dla bloku Describe:

@@ -8,6 +8,7 @@
 
 # Groups of translation strings
 # A = general
+# X - temporary deprecation messages
 # B = passed tests
 # C = failed tests
 # D = skipped tests
@@ -37,6 +38,14 @@ ConvertFrom-StringData @'
     #Type of encoding used for write text files
     #Suppurted vales: ASCII,Unicode,UTF7,UTF8
     msgA018 = ASCII
+    msgA019 = Value of the parameter PesterResult can't be null or empty.
+    msgA020 = The test result named: '{0}' is duplicated in the ResultOrder parameter values. It will be skipped to avoid duplicating of a report section.
+    msgA021 = The test result named: '{0}' in unrecognized and will not be included in a report.
+    msgA022 = Documents will be exported with options:
+    msgX001 = The parameter '{0}' is deprecated and will be removed in the further version of Format-Pester. Please use the parameters Include instead.
+    msgX002 = The parameter Order is deprecated and will be removed in the further version of Format-Pester. Please use the parameter ResultOrder instead."
+    msgX003 = The parameter PassedFirst parameter was used but passed results are not included in the report.
+    msgX004 = The parameter FailedFirst parameter was used but failed results are not included in the report.
     msgB000 = Passed
     msgB001 = Details for passed tests
     msgB002 = Details for passed tests by Describe block:
