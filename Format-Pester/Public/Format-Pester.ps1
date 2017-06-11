@@ -43,14 +43,11 @@ Function Format-Pester {
     .PARAMETER Include
     Customizes the output what Format-Pester writes to created documents.
 
-    Available options are All, Passed, Failed, Pending, Skipped, Inconclusive, None.
+    Available options are All, Passed, Failed, Pending, Skipped, Inconclusive.
     The options can be combined to define presets.
 
     This parameter does not affect the content of the summary table - it will be contains
     information (counts) about all types of tests/results.
-
-    Common use cases are:
-    None - sections with results of any tests will not be created.
 
     .PARAMETER PassedOnly
     Since the version 1.5.0 a usage of the PassedOnly parameter is deprecated. Please use Include instead.
@@ -196,7 +193,7 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'DeprecatedOrderParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeParamSet')]
         [ValidateNotNullorEmpty()]
-        [ValidateSet('All', 'Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive', 'None')]
+        [ValidateSet('All', 'Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')]
         [String[]]$Include = 'All',
 
         [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
@@ -408,11 +405,6 @@ Function Format-Pester {
                     $IncludeInternal = $TestResultsNames
 
                 }
-                Elseif ( $Include -contains 'None' ) {
-
-                    $IncludeInternal = ""
-
-                }
                 Else {
 
                     $IncludeInternal = $Include
@@ -455,7 +447,7 @@ Function Format-Pester {
                 }
                 ElseIf ( [String]::IsNullOrEmpty($ResultsOrder) ) {
 
-                    $ResultsOrderInternal = @('Passed', 'Failed', 'Skipped', 'Pending', 'Inconclusive')
+                    $ResultsOrderInternal = @('Failed', 'Passed', 'Skipped', 'Pending', 'Inconclusive')
 
                 }
                 Else {
