@@ -146,7 +146,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $true, ParameterSetName = 'PassedOnlyParamSet')]
         [Parameter(Mandatory = $true, ParameterSetName = 'FailedOnlyParamSet')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SummaryOnlyParamSet')]
-        [Parameter(Mandatory = $false, ParameterSetName = 'VersionOnlyParamSet')]
         [ValidateSet('Text', 'Word', 'HTML')]
         [String[]]$Format,
 
@@ -212,7 +211,6 @@ Function Format-Pester {
         [Parameter(Mandatory = $false, ParameterSetName = 'IncludeParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'PassedOnlyParamSet')]
         [Parameter(Mandatory = $false, ParameterSetName = 'FailedOnlyParamSet')]
-        [Parameter(Mandatory = $false, ParameterSetName = 'SummaryOnlyParamSet')]
         [Switch]$SkipTableOfContent,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AllParamSet')]
