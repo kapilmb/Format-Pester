@@ -382,7 +382,7 @@ Function Format-Pester {
 
             If ( $PassedOnly.IsPresent -and $PesterResult.PassedCount -gt 0 ) {
 
-                [String]$MessageText = "$LocalizedStrings.msgX001" -f "PassedOnly"
+                [String]$MessageText = $LocalizedStrings.msgX001 -f "PassedOnly"
 
                 Write-Warning -Message "Passed" # $MessageText
 
@@ -391,7 +391,7 @@ Function Format-Pester {
             }
             Elseif( $FailedOnly.IsPresent -and $PesterResult.FailedCount -gt 0) {
 
-                [String]$MessageText = "$LocalizedStrings.msgX001" -f "FailedOnly"
+                [String]$MessageText = $LocalizedStrings.msgX001 -f "FailedOnly"
 
                 Write-Warning -Message $MessageText
 
@@ -458,7 +458,7 @@ Function Format-Pester {
 
                             If ( $ResultsOrderInternal -contains $CurrentResult ) {
 
-                                [String]$MessageText = "$LocalizedStrings.msgA020" -f $CurrentResult
+                                [String]$MessageText = $LocalizedStrings.msgA020 -f $CurrentResult
 
                                 Write-Warning -Message $MessageText
 
@@ -472,7 +472,7 @@ Function Format-Pester {
                         }
                         Else {
 
-                            [String]$MessageText = "LocalizedStrings.msgA021" -f $CurrentResult
+                            [String]$MessageText = LocalizedStrings.msgA021 -f $CurrentResult
 
                             Write-Warning -Message $MessageText
 
@@ -647,7 +647,7 @@ Function Format-Pester {
 
                                 $CurrentPesterTestResultsCount2 = ($CurrentPesterTestResults2 | Measure-Object).Count
 
-                                [String]$MessageText = "{0} {1} {2}, {3} {4}" -f $LocalizedStrings.msgA016, $Header2TitlePart, $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount2
+                                [String]$MessageText = "{0} {1}, {2} {3}" -f $LocalizedStrings.msgA016, $Header2TitlePart, $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount2
 
                                 Write-Verbose -Message $MessageText
 
@@ -686,7 +686,7 @@ Function Format-Pester {
                                 } #$GroupResultsBy -eq 'Result-Describe-Context'
                                 Else {
 
-                                    [String]$MessageText = "{0} {1} {2}, {3}: {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA17, $CurrentPesterTestResultsCount3
+                                    [String]$MessageText = "{0} {1} {2}, {3}: {4}" -f $LocalizedStrings.msgA016, $Header3TitlePart, $($Header3.Context), $LocalizedStrings.msgA017, $CurrentPesterTestResultsCount3
 
                                     Write-Verbose -Message $MessageText
 
